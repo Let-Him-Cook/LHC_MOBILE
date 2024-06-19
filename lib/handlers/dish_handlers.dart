@@ -8,7 +8,7 @@ Future<List<Dish>> getAllDishes() async {
   final response = await http.get(Uri.parse(requestUrl));
 
   if (response.statusCode == 200) {
-    final data = jsonDecode(response.body) as List<dynamic>;
+    final data = jsonDecode(utf8.decode(response.bodyBytes)) as List<dynamic>;
     final dishes = data.map((dish) => Dish.fromJson(dish)).toList();
     return dishes;
   } else {

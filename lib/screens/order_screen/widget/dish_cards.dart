@@ -46,12 +46,16 @@ class DishCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(
-                    dish.name,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: background,
+                  SizedBox(
+                    width: 150,
+                    child: Text(
+                      dish.name,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: background,
+                      ),
                     ),
                   ),
                   Text(

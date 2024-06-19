@@ -46,12 +46,14 @@ class DishModal extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          Text(
-            dish.description,
-            style: const TextStyle(
-              color: secondaryColor,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+          Expanded(
+            child: Text(
+              dish.description,
+              style: const TextStyle(
+                color: secondaryColor,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           ElevatedButton(
