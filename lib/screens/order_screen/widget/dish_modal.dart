@@ -59,14 +59,14 @@ class DishModal extends StatelessWidget {
               addDish(dish);
             },
             style: const ButtonStyle(
-              padding: MaterialStatePropertyAll(
+              padding: WidgetStatePropertyAll(
                 EdgeInsets.symmetric(
                   vertical: 32,
                   horizontal: 16,
                 ),
               ),
-              backgroundColor: MaterialStatePropertyAll(onBackground),
-              shape: MaterialStatePropertyAll(
+              backgroundColor: WidgetStatePropertyAll(onBackground),
+              shape: WidgetStatePropertyAll(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(16),

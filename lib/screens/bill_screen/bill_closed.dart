@@ -92,15 +92,15 @@ class _BillClosedScreenState extends State<BillClosedScreen> {
                               );
                             },
                             style: const ButtonStyle(
-                              padding: MaterialStatePropertyAll(
+                              padding: WidgetStatePropertyAll(
                                 EdgeInsets.symmetric(
                                   horizontal: 24,
                                   vertical: 24,
                                 ),
                               ),
                               backgroundColor:
-                                  MaterialStatePropertyAll(onBackground),
-                              shape: MaterialStatePropertyAll(
+                                  WidgetStatePropertyAll(onBackground),
+                              shape: WidgetStatePropertyAll(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(16),

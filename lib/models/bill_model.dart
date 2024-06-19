@@ -8,7 +8,7 @@ class Bill {
     required this.orders,
   });
 
-  final String uuid;
+  final String? uuid;
   final String clientUuid;
   final int table;
   final List<Order> orders;
@@ -26,7 +26,7 @@ class Bill {
   double calculateTotalBillValue() {
     double totalValue = 0;
     for (var order in orders) {
-      totalValue += order.totalPrice;
+      totalValue += order.totalPrice!;
     }
     return totalValue;
   }

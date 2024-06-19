@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:let_him_cook/constants.dart';
 import 'package:let_him_cook/handlers/dish_handlers.dart';
+import 'package:let_him_cook/handlers/order_handlers.dart';
 import 'package:let_him_cook/models/bill_model.dart';
 import 'package:let_him_cook/models/dish_model.dart';
 import 'package:let_him_cook/models/dish_on_order.dart';
@@ -9,7 +10,6 @@ import 'package:let_him_cook/models/order_model.dart';
 import 'package:let_him_cook/screens/bill_screen/bill_screen.dart';
 import 'package:let_him_cook/screens/order_screen/widget/dish_cards.dart';
 import 'package:let_him_cook/screens/order_screen/widget/dish_modal.dart';
-import 'package:let_him_cook/screens/order_screen/widget/menu_items.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:let_him_cook/screens/order_screen/widget/order_modal.dart';
 
@@ -24,8 +24,8 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   late Bill userBill = const Bill(
-    uuid: "",
-    clientUuid: "",
+    uuid: null,
+    clientUuid: "4e90f8e4-4cd5-4338-8b23-de7dc8e09876",
     table: 1,
     orders: [],
   );
@@ -42,19 +42,19 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   void prepareDishesOnScreen() async {
-    dishes = await getAllDishes();
-    category = "Lanche";
-    isLoading = false;
+    var getDishes = await getAllDishes();
+    setState(() {
+      dishes = getDishes;
+      isLoading = false;
+    });
   }
 
-  void createOrderAndAddToBill(List<DishOnOrder> orderedDishes) {
+  void createOrderAndAddToBill(List<DishOnOrder> orderedDishes) async {
     double totalPrice = orderedDishes.fold(0,
         (previousValue, dish) => previousValue + (dish.quantity * dish.price));
 
-    String orderUuid = "";
-
     Order order = Order(
-      uuid: orderUuid,
+      uuid: null,
       clientUuid: userBill.clientUuid,
       table: userBill.table,
       totalPrice: totalPrice,
@@ -62,8 +62,9 @@ class _OrderScreenState extends State<OrderScreen> {
       state: "PENDENTE",
     );
 
+    await createOrder(order, context);
+
     setState(() {
-      userBill = userBill.addOrder(order);
       orderedDishes = [];
     });
   }
@@ -77,7 +78,6 @@ class _OrderScreenState extends State<OrderScreen> {
           orderedDishes[i] = DishOnOrder(
             uuid: dish.uuid,
             image: dish.image,
-            category: dish.category,
             name: dish.name,
             price: dish.price,
             description: dish.description,
@@ -94,7 +94,6 @@ class _OrderScreenState extends State<OrderScreen> {
           DishOnOrder(
             uuid: dish.uuid,
             image: dish.image,
-            category: dish.category,
             name: dish.name,
             price: dish.price,
             description: dish.description,
@@ -134,8 +133,9 @@ class _OrderScreenState extends State<OrderScreen> {
               orderedDishes: orderedDishes,
               addOrderToBill: () {
                 createOrderAndAddToBill(orderedDishes);
-                orderedDishes = [];
-                Navigator.pop(context);
+                setState(() {
+                  orderedDishes = [];
+                });
               },
             ),
           );
@@ -156,7 +156,7 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size(double.infinity, 100),
+        preferredSize: const Size(double.infinity, 150),
         child: Container(
           color: primaryColor,
           height: double.infinity,
@@ -201,24 +201,8 @@ class _OrderScreenState extends State<OrderScreen> {
                 children: [
                   Container(
                     margin: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        MenuItem(
-                          changePage: () {
-                            changeCategory("Lanche");
-                          },
-                          category: "Lanches",
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        MenuItem(
-                          changePage: () {
-                            changeCategory("Bebida");
-                          },
-                          category: "Bebidas",
-                        ),
-                      ],
+                    child: const Column(
+                      children: [],
                     ),
                   ),
                   InkWell(
@@ -277,9 +261,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           ),
                         )
                       : GridView.builder(
-                          itemCount: dishes
-                              .where((dish) => dish.category == category)
-                              .length,
+                          itemCount: dishes.length,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
@@ -287,9 +269,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             mainAxisSpacing: 20,
                           ),
                           itemBuilder: (context, index) {
-                            var filteredDishes = dishes
-                                .where((dish) => dish.category == category)
-                                .toList();
+                            var filteredDishes = dishes.toList();
                             var dish = filteredDishes[index];
                             return DishCard(
                               dish: dish,
@@ -328,8 +308,8 @@ class _OrderScreenState extends State<OrderScreen> {
                             },
                             style: const ButtonStyle(
                               backgroundColor:
-                                  MaterialStatePropertyAll(onBackground),
-                              shape: MaterialStatePropertyAll(
+                                  WidgetStatePropertyAll(onBackground),
+                              shape: WidgetStatePropertyAll(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(16),

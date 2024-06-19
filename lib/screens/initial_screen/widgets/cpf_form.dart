@@ -119,8 +119,8 @@ class CpfForm extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () => _onPressed(context),
               style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(onBackground),
-                shape: MaterialStatePropertyAll(
+                backgroundColor: WidgetStatePropertyAll(onBackground),
+                shape: WidgetStatePropertyAll(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(16),

@@ -54,9 +54,9 @@ class BillOrderCard extends StatelessWidget {
           ),
           ListView.builder(
             shrinkWrap: true,
-            itemCount: order.dishes.length,
+            itemCount: order.dishes!.length,
             itemBuilder: (context, index) {
-              final dish = order.dishes[index];
+              final dish = order.dishes![index];
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -84,7 +84,7 @@ class BillOrderCard extends StatelessWidget {
             height: 16,
           ),
           Text(
-            "Preço: R\$ ${order.totalPrice.toStringAsFixed(2)}",
+            "Preço: R\$ ${order.totalPrice!.toStringAsFixed(2)}",
             style: const TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,

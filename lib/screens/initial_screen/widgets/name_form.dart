@@ -60,8 +60,8 @@ class NameForm extends StatelessWidget {
             child: ElevatedButton(
               onPressed: registerUser,
               style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(onBackground),
-                shape: MaterialStatePropertyAll(
+                backgroundColor: WidgetStatePropertyAll(onBackground),
+                shape: WidgetStatePropertyAll(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(16),

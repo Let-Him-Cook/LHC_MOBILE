@@ -71,15 +71,14 @@ class BillScreen extends StatelessWidget {
                           Navigator.of(context).pop();
                         },
                         style: const ButtonStyle(
-                          padding: MaterialStatePropertyAll(
+                          padding: WidgetStatePropertyAll(
                             EdgeInsets.symmetric(
                               horizontal: 24,
                               vertical: 24,
                             ),
                           ),
-                          backgroundColor:
-                              MaterialStatePropertyAll(onBackground),
-                          shape: MaterialStatePropertyAll(
+                          backgroundColor: WidgetStatePropertyAll(onBackground),
+                          shape: WidgetStatePropertyAll(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(16),
@@ -109,15 +108,14 @@ class BillScreen extends StatelessWidget {
                           );
                         },
                         style: const ButtonStyle(
-                          padding: MaterialStatePropertyAll(
+                          padding: WidgetStatePropertyAll(
                             EdgeInsets.symmetric(
                               horizontal: 24,
                               vertical: 24,
                             ),
                           ),
-                          backgroundColor:
-                              MaterialStatePropertyAll(onBackground),
-                          shape: MaterialStatePropertyAll(
+                          backgroundColor: WidgetStatePropertyAll(onBackground),
+                          shape: WidgetStatePropertyAll(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(16),
@@ -208,14 +206,14 @@ class BillScreen extends StatelessWidget {
                         confirmCloseBill(context);
                       },
                       style: const ButtonStyle(
-                        padding: MaterialStatePropertyAll(
+                        padding: WidgetStatePropertyAll(
                           EdgeInsets.symmetric(
                             horizontal: 24,
                             vertical: 24,
                           ),
                         ),
-                        backgroundColor: MaterialStatePropertyAll(onBackground),
-                        shape: MaterialStatePropertyAll(
+                        backgroundColor: WidgetStatePropertyAll(onBackground),
+                        shape: WidgetStatePropertyAll(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(16),

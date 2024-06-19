@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:let_him_cook/constants.dart';
 import 'package:let_him_cook/models/dish_on_order.dart';
-import 'package:let_him_cook/models/order_model.dart';
 import 'package:let_him_cook/screens/order_screen/widget/order_dish_card.dart';
 
 class OrderModal extends StatefulWidget {
@@ -21,6 +19,7 @@ class OrderModal extends StatefulWidget {
 
 class _OrderModalState extends State<OrderModal> {
   double total = 0.00;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -43,7 +42,6 @@ class _OrderModalState extends State<OrderModal> {
           DishOnOrder updatedDish = DishOnOrder(
             uuid: dish.uuid,
             image: dish.image,
-            category: dish.category,
             name: dish.name,
             price: dish.price,
             description: dish.description,
@@ -66,7 +64,6 @@ class _OrderModalState extends State<OrderModal> {
             DishOnOrder updatedDish = DishOnOrder(
               uuid: dish.uuid,
               image: dish.image,
-              category: dish.category,
               name: dish.name,
               price: dish.price,
               description: dish.description,
@@ -147,18 +144,24 @@ class _OrderModalState extends State<OrderModal> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      widget.addOrderToBill();
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      await widget.addOrderToBill();
+                      setState(() {
+                        isLoading = false;
+                      });
                     },
                     style: const ButtonStyle(
-                      padding: MaterialStatePropertyAll(
+                      padding: WidgetStatePropertyAll(
                         EdgeInsets.symmetric(
                           horizontal: 24,
                           vertical: 24,
                         ),
                       ),
-                      backgroundColor: MaterialStatePropertyAll(onBackground),
-                      shape: MaterialStatePropertyAll(
+                      backgroundColor: WidgetStatePropertyAll(onBackground),
+                      shape: WidgetStatePropertyAll(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(16),

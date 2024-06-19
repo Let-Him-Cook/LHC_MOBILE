@@ -5,7 +5,6 @@ class DishOnOrder {
     required this.uuid,
     required this.image,
     required this.name,
-    required this.category,
     required this.price,
     required this.description,
     required this.quantity,
@@ -13,7 +12,6 @@ class DishOnOrder {
 
   final String uuid;
   final String image;
-  final String category;
   final String name;
   final double price;
   final String description;
@@ -23,11 +21,21 @@ class DishOnOrder {
     return DishOnOrder(
       uuid: dish.uuid,
       image: dish.image,
-      category: dish.category,
       name: dish.name,
       price: dish.price,
       description: dish.description,
       quantity: 1,
+    );
+  }
+
+  factory DishOnOrder.fromJson(Map<String, dynamic> json) {
+    return DishOnOrder(
+      uuid: json['uuid'] as String,
+      image: json['image'] as String,
+      name: json['name'] as String,
+      price: json['price'] as double,
+      description: json['description'] as String,
+      quantity: json['quantity'] as int,
     );
   }
 }
