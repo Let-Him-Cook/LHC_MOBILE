@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:let_him_cook/screens/bill_screen/bill_closed.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:let_him_cook/screens/initial_screen/initial_screen.dart';
 

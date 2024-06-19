@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:let_him_cook/constants.dart';
-import 'package:let_him_cook/dummyData/dummy_dishes.dart';
 import 'package:let_him_cook/models/bill_model.dart';
 import 'package:let_him_cook/models/dish_model.dart';
 import 'package:let_him_cook/models/dish_on_order.dart';
