@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:let_him_cook/constants.dart';
+import 'package:let_him_cook/handlers/dish_handlers.dart';
 import 'package:let_him_cook/models/bill_model.dart';
 import 'package:let_him_cook/models/dish_model.dart';
 import 'package:let_him_cook/models/dish_on_order.dart';
@@ -22,17 +23,28 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  late Bill userBill =
-      const Bill(uuid: "", clientUuid: "", table: 1, orders: []);
+  late Bill userBill = const Bill(
+    uuid: "",
+    clientUuid: "",
+    table: 1,
+    orders: [],
+  );
   List<DishOnOrder> orderedDishes = [];
   List<Dish> dishes = [];
   String category = "Lanche";
+  bool isLoading = true;
 
   @override
   void initState() {
-    dishes = dishList;
-    category = "Lanche";
+    isLoading = true;
+    prepareDishesOnScreen();
     super.initState();
+  }
+
+  void prepareDishesOnScreen() async {
+    dishes = await getAllDishes();
+    category = "Lanche";
+    isLoading = false;
   }
 
   void createOrderAndAddToBill(List<DishOnOrder> orderedDishes) {
@@ -258,31 +270,37 @@ class _OrderScreenState extends State<OrderScreen> {
                     right: 32,
                     top: 16,
                   ),
-                  child: GridView.builder(
-                    itemCount: dishes
-                        .where((dish) => dish.category == category)
-                        .length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                    ),
-                    itemBuilder: (context, index) {
-                      var filteredDishes = dishes
-                          .where((dish) => dish.category == category)
-                          .toList();
-                      var dish = filteredDishes[index];
-                      return DishCard(
-                        dish: dish,
-                        openDishModal: () {
-                          addDishDialog(
-                            dish,
-                          );
-                        },
-                      );
-                    },
-                  ),
+                  child: isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: onBackground,
+                          ),
+                        )
+                      : GridView.builder(
+                          itemCount: dishes
+                              .where((dish) => dish.category == category)
+                              .length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20,
+                          ),
+                          itemBuilder: (context, index) {
+                            var filteredDishes = dishes
+                                .where((dish) => dish.category == category)
+                                .toList();
+                            var dish = filteredDishes[index];
+                            return DishCard(
+                              dish: dish,
+                              openDishModal: () {
+                                addDishDialog(
+                                  dish,
+                                );
+                              },
+                            );
+                          },
+                        ),
                 ),
                 Positioned(
                   bottom: 12,
