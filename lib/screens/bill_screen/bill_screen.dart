@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:let_him_cook/constants.dart';
 import 'package:let_him_cook/handlers/order_handlers.dart';
-import 'package:let_him_cook/models/bill_model.dart';
 import 'package:let_him_cook/models/order_model.dart';
 import 'package:let_him_cook/models/user_model.dart';
 import 'package:let_him_cook/screens/bill_screen/bill_closed.dart';
