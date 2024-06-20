@@ -19,14 +19,14 @@ class Order {
 
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
-      uuid: json['uuid'] as String,
-      clientUuid: json['clientUuid'] as String,
-      table: json['table'] as int?,
+      uuid: json['id'] as String,
+      clientUuid: json['idClient'] as String,
+      table: json['tableNumber'] as int?,
       totalPrice: json['totalPrice'] as double?,
-      dishes: (json['dishes'] as List<dynamic>?)
+      dishes: (json['orderDishDetailDTOS'] as List<dynamic>?)
           ?.map((dish) => DishOnOrder.fromJson(dish))
           .toList(),
-      state: json['state'] as String?,
+      state: json['status'] as String?,
     );
   }
 }

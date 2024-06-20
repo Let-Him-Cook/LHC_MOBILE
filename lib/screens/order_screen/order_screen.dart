@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:let_him_cook/constants.dart';
 import 'package:let_him_cook/handlers/dish_handlers.dart';
 import 'package:let_him_cook/handlers/order_handlers.dart';
-import 'package:let_him_cook/models/bill_model.dart';
 import 'package:let_him_cook/models/dish_model.dart';
 import 'package:let_him_cook/models/dish_on_order.dart';
 import 'package:let_him_cook/models/order_model.dart';

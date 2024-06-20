@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:let_him_cook/models/user_model.dart';
 
-const requestUrl = "https://lhcapi.azurewebsites.net/api/clients";
-const requestLoginUrl = "https://lhcapi.azurewebsites.net/api/clients/login";
+const requestUrl = "http://localhost:8080/api/clients";
+const requestLoginUrl = "http://localhost:8080/api/clients/login";
 
 Future<User?> clientLogin(String cpf) async {
   final Map<String, dynamic> loginMap = {

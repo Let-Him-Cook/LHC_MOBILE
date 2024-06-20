@@ -6,15 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:let_him_cook/models/order_model.dart';
 
-const requestUrl = "https://lhcapi.azurewebsites.net/api/orders";
+const requestUrl = "http://localhost:8080/api/orders";
 
 Future<void> createOrder(Order order, BuildContext context) async {
   List orderDishes = [];
   for (var dish in order.dishes!) {
     orderDishes.add({
       "idDish": dish.uuid,
-      "name": dish.name,
-      "price": dish.price,
+      "amount": dish.quantity,
     });
   }
   try {
@@ -22,9 +21,8 @@ Future<void> createOrder(Order order, BuildContext context) async {
       "idClient": order.clientUuid,
       "totalPrice": order.totalPrice,
       "status": order.state,
-      "tableNumber": order.table,
-      "observation": "",
-      "orderDishesModelList": orderDishes,
+      "tableNumber": 1,
+      "orderDishes": orderDishes,
     };
 
     final String jsonOrder = jsonEncode(orderMap);
@@ -35,7 +33,7 @@ Future<void> createOrder(Order order, BuildContext context) async {
       body: jsonOrder,
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -58,16 +56,16 @@ Future<void> createOrder(Order order, BuildContext context) async {
 }
 
 Future<List<Order>> getOrdersByClient(String clientUuid) async {
-  final url = Uri.parse("https://lhcapi.azurewebsites.net/api/$clientUuid");
+  final url = Uri.parse("http://localhost:8080/api/orders/$clientUuid");
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
+    print("${response.body}*****************************************");
     final List<dynamic> decodedData = jsonDecode(response.body);
+    print(decodedData);
 
     return decodedData.map((data) => Order.fromJson(data)).toList();
   } else {
     return [];
   }
 }
-
-
