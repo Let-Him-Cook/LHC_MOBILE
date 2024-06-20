@@ -19,6 +19,7 @@ class _BillScreenState extends State<BillScreen> {
   double totalBillValue = 0;
   List<Order> orders = [];
   bool isLoading = false;
+  bool isClosing = false;
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _BillScreenState extends State<BillScreen> {
     });
 
     List<Order> requestedOrders = await getOrdersByClient(userInfo!.uuid);
+    print(requestedOrders);
 
     double totalValue = 0;
 
@@ -130,7 +132,22 @@ class _BillScreenState extends State<BillScreen> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          setState(() {
+                            isClosing = true;
+                          });
+                          List<String> orderIds = [];
+
+                          for (var i in orders) {
+                            orderIds.add(i.uuid!);
+                          }
+
+                          await closeOrders(orderIds, context);
+
+                          setState(() {
+                            isClosing = false;
+                          });
+
                           Navigator.of(context).pop();
 
                           Navigator.of(context).pushReplacement(
@@ -158,14 +175,18 @@ class _BillScreenState extends State<BillScreen> {
                             ),
                           ),
                         ),
-                        child: const Text(
-                          "FECHAR CONTA",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: isClosing
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text(
+                                "FECHAR CONTA",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ),
                     ],
                   ),
@@ -207,15 +228,21 @@ class _BillScreenState extends State<BillScreen> {
                 color: secondaryColor,
               ),
               Expanded(
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: orders.length,
-                  itemBuilder: (context, index) {
-                    return BillOrderCard(
-                      order: orders[index],
-                    );
-                  },
-                ),
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: secondaryColor,
+                        ),
+                      )
+                    : ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: orders.length,
+                        itemBuilder: (context, index) {
+                          return BillOrderCard(
+                            order: orders[index],
+                          );
+                        },
+                      ),
               ),
               const Divider(
                 thickness: 2,

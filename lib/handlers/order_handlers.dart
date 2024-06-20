@@ -60,12 +60,41 @@ Future<List<Order>> getOrdersByClient(String clientUuid) async {
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
-    print("${response.body}*****************************************");
-    final List<dynamic> decodedData = jsonDecode(response.body);
-    print(decodedData);
+    final decodedData =
+        jsonDecode(utf8.decode(response.bodyBytes)) as List<dynamic>;
 
     return decodedData.map((data) => Order.fromJson(data)).toList();
   } else {
     return [];
+  }
+}
+
+Future<void> closeOrders(List<String> orderIds, BuildContext context) async {
+  try {
+    final String jsonOrderIds = jsonEncode(orderIds);
+
+    final response = await http.post(
+      Uri.parse("$requestUrl/close-orders"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonOrderIds,
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Pedidos fechados com sucesso'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      throw Exception('Error closing orders: ${response.statusCode}');
+    }
+  } catch (error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Erro ao fechar pedidos: $error'),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 }

@@ -19,7 +19,7 @@ class Order {
 
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
-      uuid: json['id'] as String,
+      uuid: json['idOrder'] as String,
       clientUuid: json['idClient'] as String,
       table: json['tableNumber'] as int?,
       totalPrice: json['totalPrice'] as double?,

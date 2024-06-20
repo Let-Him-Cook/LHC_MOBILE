@@ -57,18 +57,14 @@ class _InitialScreenState extends State<InitialScreen> {
   }
 
   Future<void> registerUser(String cpf, String name) async {
-    createUser(name, cpf, context);
-
     setState(() {
       isLoading = true;
     });
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const OrderScreen(),
-      ),
-    );
+    await createUser(name, cpf, context);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override

@@ -30,12 +30,12 @@ class DishOnOrder {
 
   factory DishOnOrder.fromJson(Map<String, dynamic> json) {
     return DishOnOrder(
-      uuid: json['uuid'] as String,
-      image: json['image'] as String,
+      uuid: "",
+      image: "",
       name: json['name'] as String,
       price: json['price'] as double,
-      description: json['description'] as String,
-      quantity: json['quantity'] as int,
+      description: "",
+      quantity: json['amount'] as int,
     );
   }
 }

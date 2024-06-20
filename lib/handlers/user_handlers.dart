@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:let_him_cook/models/user_model.dart';
 
+import '../screens/order_screen/order_screen.dart';
+
 const requestUrl = "http://localhost:8080/api/clients";
 const requestLoginUrl = "http://localhost:8080/api/clients/login";
 
@@ -27,7 +29,7 @@ Future<User?> clientLogin(String cpf) async {
   }
 }
 
-void createUser(String name, String cpf, BuildContext context) async {
+Future<void> createUser(String name, String cpf, BuildContext context) async {
   try {
     final Map<String, dynamic> userMap = {
       "name": name,
@@ -44,6 +46,12 @@ void createUser(String name, String cpf, BuildContext context) async {
 
     if (response.statusCode == 200) {
       await clientLogin(cpf);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const OrderScreen(),
+        ),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
