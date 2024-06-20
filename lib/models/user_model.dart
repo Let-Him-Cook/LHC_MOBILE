@@ -3,13 +3,19 @@ class User {
     required this.uuid,
     required this.name,
     required this.cpf,
-    required this.email,
-    required this.password,
   });
 
   final String uuid;
   final String name;
-  final String email;
-  final String password;
   final String cpf;
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      uuid: json['id'] as String,
+      name: json['name'] as String,
+      cpf: json['cpf'] as String,
+    );
+  }
 }
+
+User? userInfo;

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:let_him_cook/models/dish_model.dart';
 
-const requestUrl = "http://localhost:8080/api/dishes";
+const requestUrl = "https://lhcapi.azurewebsites.net/api/dishes";
 
 Future<List<Dish>> getAllDishes() async {
   final response = await http.get(Uri.parse(requestUrl));

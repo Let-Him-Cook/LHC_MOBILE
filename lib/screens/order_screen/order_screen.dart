@@ -7,6 +7,7 @@ import 'package:let_him_cook/models/bill_model.dart';
 import 'package:let_him_cook/models/dish_model.dart';
 import 'package:let_him_cook/models/dish_on_order.dart';
 import 'package:let_him_cook/models/order_model.dart';
+import 'package:let_him_cook/models/user_model.dart';
 import 'package:let_him_cook/screens/bill_screen/bill_screen.dart';
 import 'package:let_him_cook/screens/order_screen/widget/dish_cards.dart';
 import 'package:let_him_cook/screens/order_screen/widget/dish_modal.dart';
@@ -23,12 +24,6 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  late Bill userBill = const Bill(
-    uuid: null,
-    clientUuid: "4e90f8e4-4cd5-4338-8b23-de7dc8e09876",
-    table: 1,
-    orders: [],
-  );
   List<DishOnOrder> orderedDishes = [];
   List<Dish> dishes = [];
   String category = "Lanche";
@@ -55,8 +50,8 @@ class _OrderScreenState extends State<OrderScreen> {
 
     Order order = Order(
       uuid: null,
-      clientUuid: userBill.clientUuid,
-      table: userBill.table,
+      clientUuid: userInfo!.uuid,
+      table: 1,
       totalPrice: totalPrice,
       dishes: orderedDishes,
       state: "PENDENTE",
@@ -208,9 +203,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => BillScreen(
-                          userBill: userBill,
-                        ),
+                        builder: (context) => const BillScreen(),
                       ));
                     },
                     child: Container(

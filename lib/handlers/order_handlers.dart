@@ -6,19 +6,27 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:let_him_cook/models/order_model.dart';
 
-const requestUrl = "http://localhost:8080/api/orders";
+const requestUrl = "https://lhcapi.azurewebsites.net/api/orders";
 
 Future<void> createOrder(Order order, BuildContext context) async {
+  List orderDishes = [];
+  for (var dish in order.dishes!) {
+    orderDishes.add({
+      "idDish": dish.uuid,
+      "name": dish.name,
+      "price": dish.price,
+    });
+  }
   try {
     final Map<String, dynamic> orderMap = {
-      'idClient': order.clientUuid,
-      'totalPrice': order.totalPrice,
-      'status': order.state,
-      'tableNumber': order.table,
-      'observation': "",
+      "idClient": order.clientUuid,
+      "totalPrice": order.totalPrice,
+      "status": order.state,
+      "tableNumber": order.table,
+      "observation": "",
+      "orderDishesModelList": orderDishes,
     };
 
-    // Encode the Map into JSON format
     final String jsonOrder = jsonEncode(orderMap);
 
     final response = await http.post(
@@ -50,15 +58,16 @@ Future<void> createOrder(Order order, BuildContext context) async {
 }
 
 Future<List<Order>> getOrdersByClient(String clientUuid) async {
-  final url = Uri.parse("http://localhost:8080/api/orders");
+  final url = Uri.parse("https://lhcapi.azurewebsites.net/api/$clientUuid");
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
     final List<dynamic> decodedData = jsonDecode(response.body);
-    // Assuming Order can be decoded from JSON
+
     return decodedData.map((data) => Order.fromJson(data)).toList();
   } else {
-    print("Error fetching orders: ${response.statusCode}");
-    return []; // Empty list on error
+    return [];
   }
 }
+
+

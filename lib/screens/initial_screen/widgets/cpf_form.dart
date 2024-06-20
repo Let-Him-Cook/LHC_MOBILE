@@ -6,12 +6,14 @@ import 'package:let_him_cook/constants.dart';
 class CpfForm extends StatelessWidget {
   const CpfForm({
     super.key,
+    required this.isLoading,
     required this.cpfController,
-    required this.onToggle,
+    required this.loginFunc,
   });
 
+  final bool isLoading;
   final TextEditingController cpfController;
-  final VoidCallback onToggle;
+  final Function(String) loginFunc;
 
   bool validarCPF(String cpf) {
     // Remove todos os caracteres não numéricos
@@ -63,7 +65,7 @@ class CpfForm extends StatelessWidget {
   void _onPressed(BuildContext context) {
     final cpf = cpfController.text;
     if (validarCPF(cpf)) {
-      onToggle();
+      loginFunc(cpf);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -128,14 +130,18 @@ class CpfForm extends StatelessWidget {
                   ),
                 ),
               ),
-              child: const Text(
-                "ENTRAR",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: isLoading
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : const Text(
+                      "ENTRAR",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
             ),
           ),
         ],

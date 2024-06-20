@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:let_him_cook/constants.dart';
+import 'package:let_him_cook/handlers/user_handlers.dart';
+import 'package:let_him_cook/models/user_model.dart';
 import 'package:let_him_cook/screens/initial_screen/widgets/cpf_form.dart';
 import 'package:let_him_cook/screens/initial_screen/widgets/name_form.dart';
 import 'package:let_him_cook/screens/order_screen/order_screen.dart';
@@ -15,6 +17,7 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
+  bool isLoading = false;
   bool showNameForm = false;
   TextEditingController nameController = TextEditingController();
   TextEditingController cpfController = TextEditingController();
@@ -28,18 +31,44 @@ class _InitialScreenState extends State<InitialScreen> {
     super.initState();
   }
 
-  void checkUserRegister() {
+  Future<void> login(String cpf) async {
     setState(() {
-      showNameForm = !showNameForm;
+      isLoading = true;
     });
-  }
 
-  registerUser() {
-    Navigator.push(
+    User? user = await clientLogin(cpf);
+
+    if (user == null) {
+      setState(() {
+        isLoading = false;
+        showNameForm = !showNameForm;
+      });
+    } else {
+      isLoading = false;
+
+      userInfo = user;
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const OrderScreen(),
-        ));
+        ),
+      );
+    }
+  }
+
+  Future<void> registerUser(String cpf, String name) async {
+    createUser(name, cpf, context);
+
+    setState(() {
+      isLoading = true;
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const OrderScreen(),
+      ),
+    );
   }
 
   @override
@@ -55,14 +84,20 @@ class _InitialScreenState extends State<InitialScreen> {
               width: double.infinity,
               decoration: const BoxDecoration(color: background),
               child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  child: showNameForm
-                      ? NameForm(
-                          nameController: nameController,
-                          registerUser: registerUser)
-                      : CpfForm(
-                          cpfController: cpfController,
-                          onToggle: checkUserRegister)),
+                duration: const Duration(milliseconds: 500),
+                child: showNameForm
+                    ? NameForm(
+                        cpf: cpfController.text,
+                        isLoading: isLoading,
+                        nameController: nameController,
+                        registerUser: registerUser,
+                      )
+                    : CpfForm(
+                        isLoading: isLoading,
+                        cpfController: cpfController,
+                        loginFunc: login,
+                      ),
+              ),
             ),
           ),
           Expanded(

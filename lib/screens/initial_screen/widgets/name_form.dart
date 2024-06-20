@@ -4,12 +4,16 @@ import 'package:let_him_cook/constants.dart';
 class NameForm extends StatelessWidget {
   const NameForm({
     super.key,
+    required this.isLoading,
     required this.nameController,
     required this.registerUser,
+    required this.cpf,
   });
 
+  final String cpf;
+  final bool isLoading;
   final TextEditingController nameController;
-  final VoidCallback registerUser;
+  final Function(String, String) registerUser;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +62,12 @@ class NameForm extends StatelessWidget {
             width: double.infinity,
             height: 130,
             child: ElevatedButton(
-              onPressed: registerUser,
+              onPressed: () {
+                registerUser(
+                  cpf,
+                  nameController.text,
+                );
+              },
               style: const ButtonStyle(
                 backgroundColor: WidgetStatePropertyAll(onBackground),
                 shape: WidgetStatePropertyAll(
@@ -69,14 +78,18 @@ class NameForm extends StatelessWidget {
                   ),
                 ),
               ),
-              child: const Text(
-                "REGISTRAR-SE",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: isLoading
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : const Text(
+                      "REGISTRAR-SE",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
             ),
           ),
         ],

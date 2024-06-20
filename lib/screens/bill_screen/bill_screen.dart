@@ -1,21 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:let_him_cook/constants.dart';
+import 'package:let_him_cook/handlers/order_handlers.dart';
 import 'package:let_him_cook/models/bill_model.dart';
+import 'package:let_him_cook/models/order_model.dart';
+import 'package:let_him_cook/models/user_model.dart';
 import 'package:let_him_cook/screens/bill_screen/bill_closed.dart';
 import 'package:let_him_cook/screens/bill_screen/widgets/order_card.dart';
 
-class BillScreen extends StatelessWidget {
+class BillScreen extends StatefulWidget {
   const BillScreen({
     super.key,
-    required this.userBill,
   });
 
-  final Bill userBill;
+  @override
+  State<BillScreen> createState() => _BillScreenState();
+}
+
+class _BillScreenState extends State<BillScreen> {
+  double totalBillValue = 0;
+  List<Order> orders = [];
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    getUserOrders();
+    super.initState();
+  }
+
+  getUserOrders() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    List<Order> requestedOrders = await getOrdersByClient(userInfo!.uuid);
+
+    double totalValue = 0;
+
+    if (requestedOrders.isNotEmpty) {
+      for (var i in requestedOrders) {
+        totalValue += i.totalPrice!;
+      }
+    }
+
+    setState(() {
+      isLoading = false;
+      orders = requestedOrders;
+      totalBillValue = totalValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    double totalBillValue = userBill.calculateTotalBillValue();
-
     Route createFadeRoute(Widget page) {
       return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => page,
@@ -102,7 +137,8 @@ class BillScreen extends StatelessWidget {
                           Navigator.of(context).pushReplacement(
                             createFadeRoute(
                               BillClosedScreen(
-                                userBill: userBill,
+                                totalBillValue: totalBillValue,
+                                userOrders: orders,
                               ),
                             ),
                           );
@@ -174,10 +210,10 @@ class BillScreen extends StatelessWidget {
               Expanded(
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
-                  itemCount: userBill.orders.length,
+                  itemCount: orders.length,
                   itemBuilder: (context, index) {
                     return BillOrderCard(
-                      order: userBill.orders[index],
+                      order: orders[index],
                     );
                   },
                 ),

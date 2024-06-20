@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:let_him_cook/constants.dart';
-import 'package:let_him_cook/models/bill_model.dart';
+import 'package:let_him_cook/models/order_model.dart';
 import 'package:let_him_cook/screens/bill_screen/widgets/order_card.dart';
 import 'package:let_him_cook/screens/initial_screen/initial_screen.dart';
 
 class BillClosedScreen extends StatefulWidget {
-  const BillClosedScreen({super.key, required this.userBill});
+  const BillClosedScreen({
+    super.key,
+    required this.userOrders,
+    required this.totalBillValue,
+  });
 
-  final Bill userBill;
+  final List<Order> userOrders;
+  final double totalBillValue;
 
   @override
   State<BillClosedScreen> createState() => _BillClosedScreenState();
@@ -19,7 +24,7 @@ class _BillClosedScreenState extends State<BillClosedScreen> {
   @override
   void initState() {
     super.initState();
-    totalBillValue = widget.userBill.calculateTotalBillValue();
+    totalBillValue = widget.totalBillValue;
   }
 
   @override
@@ -55,10 +60,10 @@ class _BillClosedScreenState extends State<BillClosedScreen> {
                     Expanded(
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,
-                        itemCount: widget.userBill.orders.length,
+                        itemCount: widget.userOrders.length,
                         itemBuilder: (context, index) {
                           return BillOrderCard(
-                            order: widget.userBill.orders[index],
+                            order: widget.userOrders[index],
                           );
                         },
                       ),
