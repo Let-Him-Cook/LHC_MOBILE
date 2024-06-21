@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:let_him_cook/models/order_model.dart';
 
-const requestUrl = "http://localhost:8080/api/orders";
+const requestUrl = "https://lhcapi.azurewebsites.net/api/orders";
 
 Future<void> createOrder(Order order, BuildContext context) async {
   List orderDishes = [];
@@ -56,7 +56,8 @@ Future<void> createOrder(Order order, BuildContext context) async {
 }
 
 Future<List<Order>> getOrdersByClient(String clientUuid) async {
-  final url = Uri.parse("http://localhost:8080/api/orders/$clientUuid");
+  final url =
+      Uri.parse("https://lhcapi.azurewebsites.net/api/orders/$clientUuid");
   final response = await http.get(url);
 
   if (response.statusCode == 200) {

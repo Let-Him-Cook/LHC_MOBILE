@@ -5,8 +5,8 @@ import 'package:let_him_cook/models/user_model.dart';
 
 import '../screens/order_screen/order_screen.dart';
 
-const requestUrl = "http://localhost:8080/api/clients";
-const requestLoginUrl = "http://localhost:8080/api/clients/login";
+const requestUrl = "https://lhcapi.azurewebsites.net/api/clients";
+const requestLoginUrl = "https://lhcapi.azurewebsites.net/api/clients/login";
 
 Future<User?> clientLogin(String cpf) async {
   final Map<String, dynamic> loginMap = {
