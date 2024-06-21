@@ -87,7 +87,8 @@ Future<void> closeOrders(List<String> orderIds, BuildContext context) async {
         ),
       );
     } else {
-      throw Exception('Error closing orders: ${response.statusCode}');
+      throw Exception(
+          'Error closing orders: ${response.statusCode} ${response.body}');
     }
   } catch (error) {
     ScaffoldMessenger.of(context).showSnackBar(
