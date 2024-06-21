@@ -45,7 +45,10 @@ Future<void> createUser(String name, String cpf, BuildContext context) async {
     );
 
     if (response.statusCode == 200) {
-      await clientLogin(cpf);
+      User? user = await clientLogin(cpf);
+
+      userInfo = user;
+
       Navigator.push(
         context,
         MaterialPageRoute(

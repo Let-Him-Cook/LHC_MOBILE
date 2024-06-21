@@ -62,6 +62,7 @@ class _InitialScreenState extends State<InitialScreen> {
     });
 
     await createUser(name, cpf, context);
+
     setState(() {
       isLoading = false;
     });
