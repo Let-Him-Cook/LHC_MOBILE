@@ -50,6 +50,26 @@ class _BillScreenState extends State<BillScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Route createFadeRoute(Widget page) {
+      return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => page,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = 0.0;
+          const end = 1.0;
+          const curve = Curves.easeInOut;
+
+          final tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          final fadeAnimation = animation.drive(tween);
+
+          return FadeTransition(
+            opacity: fadeAnimation,
+            child: child,
+          );
+        },
+      );
+    }
+
     void confirmCloseBill(BuildContext context) {
       showDialog(
         context: context,
@@ -125,6 +145,17 @@ class _BillScreenState extends State<BillScreen> {
                           setState(() {
                             isClosing = false;
                           });
+
+                          Navigator.of(context).pop();
+
+                          Navigator.of(context).pushReplacement(
+                            createFadeRoute(
+                              BillClosedScreen(
+                                totalBillValue: totalBillValue,
+                                userOrders: orders,
+                              ),
+                            ),
+                          );
                         },
                         style: const ButtonStyle(
                           padding: WidgetStatePropertyAll(
